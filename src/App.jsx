@@ -1,11 +1,24 @@
-import DescriptionView from "./components/layout/DescriptionView";
-import ProfileCardView from "./components/layout/ProfileCardView";
-import SplitScreen from "./components/layout/SplitScreen";
+import CurrentUserLoader from "./components/container/CurrentUserLoader";
+import DataLoader from "./components/container/DataLoader";
+import UserItem from "./components/layout/list/UserItem";
+import axios from "axios";
+
+const getServerData = (url) => async () => {
+  const response = await axios.get(url);
+  return response.data;
+};
 
 function App() {
   return (
     <div className="App">
-      <SplitScreen left={ProfileCardView} right={DescriptionView} />
+      <DataLoader
+        getDataFunc={getServerData(
+          "https://jsonplaceholder.typicode.com/users"
+        )}
+        resourceName="users"
+      >
+        <UserItem />
+      </DataLoader>
     </div>
   );
 }
